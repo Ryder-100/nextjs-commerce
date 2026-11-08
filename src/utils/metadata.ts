@@ -1,7 +1,7 @@
 export const staticSeo = {
   default: {
-    title: "E-Commerce Store",
-    description: "Modern e-commerce platform with quality products and fast delivery",
+    title: "Easy island supply",
+    description: "Professional Island Wholesaler & Supply Chain",
     image: "/Logo.webp",
     canonical: "/",
   },

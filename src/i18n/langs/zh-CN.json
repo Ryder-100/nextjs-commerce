@@ -547,10 +547,7 @@
     "title": "我的账户"
   },
   "home": {
-    "categoryDescription": "发现最新趋势！新到货的新鲜产品——在它们消失之前购买新款式、科技产品和必需品。",
-    "productCarouselDescription": "发现最新趋势！新到货的新鲜产品——在它们消失之前购买新款式、科技产品和必需品。",
-    "relatedProducts": "相关商品",
-    "shopByCategory": "按分类购物"
+    "relatedProducts": "相关商品"
   },
   "loginForm": {
     "description": "如果您有账户，请使用您的电子邮件地址登录。",

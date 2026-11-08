@@ -538,10 +538,7 @@
     "title": "Mon Compte"
   },
   "home": {
-    "categoryDescription": "Découvrez les dernières tendances ! De nouveaux produits fraîchement ajoutés - achetez les nouvelles tendances, la technologie et les essentiels avant qu'ils disparaissent.",
-    "productCarouselDescription": "Découvrez les dernières tendances ! De nouveaux produits fraîchement ajoutés - achetez les nouvelles tendances, la technologie et les essentiels avant qu'ils disparaissent.",
-    "relatedProducts": "Produits associés",
-    "shopByCategory": "Acheter par catégorie"
+    "relatedProducts": "Produits associés"
   },
   "loginForm": {
     "description": "Si vous avez un compte, connectez-vous avec votre adresse e-mail.",

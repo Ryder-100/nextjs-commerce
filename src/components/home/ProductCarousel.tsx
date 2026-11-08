@@ -1,106 +1,51 @@
-"use client"
+"use client";
 
-import {FC, useMemo} from "react";
+import {FC} from "react";
 import {ThreeItemGrid} from "./ThreeItemGrid";
 import Theme from "./ProductCarouselTheme";
-import {useQuery} from "@tanstack/react-query";
-import {getSpuPage} from "@utils/api/product";
-import {Spu} from "@/types/api/product/type";
-import {useTranslations} from "next-intl";
-
+import type {ThemeProductBrief, ThemeSection} from "@/types/theme/theme-customization";
 
 interface ProductCarouselProps {
-  options: {
-    title?: string;
-    filters: Record<string, any>;
-  };
-  itemCount?: number;
-  sortOrder?: number;
+  section: ThemeSection;
 }
 
-const ProductCarousel: FC<ProductCarouselProps> = ({
-                                                     options,
-                                                     itemCount = 4,
-                                                     sortOrder,
-                                                   }) => {
-  const { filters, title } = options;
-  const t = useTranslations("home");
+const ProductCarousel: FC<ProductCarouselProps> = ({section}) => {
+  // ✅ 直接用后端已经填充好的商品数据 — 零额外请求
+  const products: ThemeProductBrief[] = section.products ?? [];
 
-  // 构建查询参数
-  const queryKey = useMemo(() => {
-    return ['product-carousel', filters, itemCount, sortOrder];
-  }, [filters, itemCount, sortOrder]);
+  if (!products.length) return null;
 
-  const filterInput = useMemo(() => {
-    const {sort: _sort, ...rest} = filters || {};
-    const filterObject: Record<string, string> = {};
+  // ✅ 标题和副标题全部从 Admin 配置的 translation 取，没配时回落
+  const title = section.translation?.title ?? section.name ?? "Products";
+  const description = section.translation?.subtitle ?? null;
+  const layout = section.layout;
+  const isFeatured3 = layout === "featured3";
 
-    // Include all filter values except sort (which we handle separately)
-    Object.entries(rest).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        filterObject[key] = String(value);
-      }
-    });
+  // 将 ThemeProductBrief 适配 ThreeItemGrid / Theme 组件期望的 Spu 字段
+  const spuLikeList = products.map((p) => ({
+    id: p.id,
+    name: p.name,
+    picUrl: p.picUrl ?? "",
+    price: p.price ?? 0,
+    originalPrice: p.originalPrice,
+    salesCount: p.salesCount ?? 0,
+  }));
 
-    return Object.keys(filterObject).length > 0 ? filterObject : undefined;
-  }, [filters]);
-
-  const sortAsc = useMemo(() => {
-    const {sort} = filters || {};
-    if (sort === "created_at-asc" || sort === "price-asc") {
-      return true;
-    }
-    return false; // 默认降序
-  }, [filters]);
-
-  const pageSize = useMemo(() => {
-    const {limit} = filters || {};
-    return limit ? parseInt(limit, 10) : itemCount;
-  }, [filters, itemCount]);
-
-  // 使用React Query获取数据
-  const {data: spuPage, isLoading} = useQuery<{ list: Spu[] }>({
-    queryKey,
-    queryFn: async () => {
-      const data = await getSpuPage({
-        ...filterInput,
-        sortAsc,
-        pageSize,
-        pageNo: 1,
-      });
-      return data || {list: []};
-    },
-    placeholderData: {list: []},
-  });
-
-  const products = useMemo(() => {
-    return spuPage?.list?.slice(0, 8) || [];
-  }, [spuPage]);
-
-  // 加载状态不显示任何内容
-  if (isLoading) {
-    return null;
-  }
-
-  if (!products.length) {
-    return null;
-  }
-
-  if (sortOrder === 2) {
+  if (isFeatured3) {
     return (
         <ThreeItemGrid
-            title={title || "Products"}
-            description={t("productCarouselDescription")}
-            products={products.slice(0, 3)}
+            title={title}
+            description={description}
+            products={spuLikeList.slice(0, 3)}
         />
     );
   }
 
   return (
       <Theme
-          title={title || "Products"}
-          description={t("productCarouselDescription")}
-          products={products}
+          title={title}
+          description={description}
+          products={spuLikeList.slice(0, Math.min(products.length, 8))}
       />
   );
 };

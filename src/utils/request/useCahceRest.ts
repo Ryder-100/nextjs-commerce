@@ -100,6 +100,12 @@ export const PAGE_CACHE_CONFIG: Record<string, PageCacheConfig> = {
     tags: ["search-results"],
     life: "hours",
   },
+
+  // Home theme customization sections (RuoYi backend)
+  theme: {
+    tags: ["theme-customization", "home-page"],
+    life: "minutes",
+  },
 };
 
 /**
