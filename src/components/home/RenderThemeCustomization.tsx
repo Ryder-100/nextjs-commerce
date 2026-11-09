@@ -10,7 +10,7 @@ interface Props {
   locale: string;
 }
 
-const RenderThemeCustomization = ({sections, locale}: Props) => {
+const RenderThemeCustomization = ({sections, locale: _locale}: Props) => {
   if (!Array.isArray(sections) || sections.length === 0) {
     return null;
   }
