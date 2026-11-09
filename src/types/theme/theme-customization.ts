@@ -6,7 +6,7 @@ export interface ThemeTranslationNode {
 }
 
 export interface ThemeCustomizationResponse {
-  themeCustomizations: [{
+  themeCustomizations: Array<{
     id: string;
     type: string;
     name: string;
@@ -14,7 +14,76 @@ export interface ThemeCustomizationResponse {
     sortOrder: number;
     themeCode?: string;
     translations: ThemeTranslationNode[];
-  }];
+  }>;
+}
+
+// ===== 新 API 类型（对接 RuoYi 后端 AppThemeCustomizationController）=====
+
+export type ThemeCustomizationType =
+    | "image_carousel"
+    | "product_carousel"
+    | "category_carousel"
+    | "static_content";
+
+export type ThemeLayout = "featured3" | "grid4" | "grid8" | null;
+
+/** 后端已填充好的 Banner 简要（image_carousel 专用，Service 层自动注入） */
+export interface ThemeBannerBrief {
+  id: number;
+  title: string;
+  url: string;
+  picUrl: string;
+}
+
+/** 后端已填充好的商品简要（product_carousel 专用，App 接口返回） */
+export interface ThemeProductBrief {
+  id: number;
+  name: string;
+  picUrl?: string;
+  price?: number;
+  originalPrice?: number;
+  salesCount?: number;
+}
+
+/** 后端已填充好的分类简要（category_carousel 专用，App 接口返回） */
+export interface ThemeCategoryBrief {
+  id: number;
+  name: string;
+  picUrl?: string;
+  slug?: string;
+}
+
+/** 归一化后的首页区块（渲染层统一消费这个结构） */
+export interface ThemeSection {
+  id: number;
+  type: ThemeCustomizationType;
+  name: string;
+  sort: number;
+  layout: ThemeLayout;
+  config: Record<string, unknown>;
+  translation: {
+    locale: string;
+    /** 后端走了回落链：true 表示当前 locale 不是精确匹配 */
+    fallback: boolean;
+    title?: string | null;
+    subtitle?: string | null;
+    content?: Record<string, unknown> | null;
+  };
+  /** image_carousel 专用：后端 Service 层从 PromotionBanner 自动注入 */
+  banners?: ThemeBannerBrief[];
+  /** product_carousel 专用：后端已填充好的商品列表（按 config.productIds 顺序） */
+  products?: ThemeProductBrief[];
+  /** category_carousel 专用：后端已填充好的分类列表（按 config.categoryIds 顺序） */
+  categories?: ThemeCategoryBrief[];
+}
+
+/** 后端 `/app-api/promotion/theme-customization/list` 响应 */
+export interface ThemeSectionsResponse {
+  pageCode: string;
+  themeCode: string;
+  requestedLocale: string;
+  defaultLocale: string;
+  sections: ThemeSection[];
 }
 
 // footer 
@@ -86,15 +155,6 @@ export interface ThemeCustomizationResult {
 
 // Theme Customization Options Types
 
-export interface ImageCarouselOptions {
-  images?: Array<{
-    title?: string;
-    link?: string;
-    image?: string;
-    imageUrl?: string;
-  }>;
-}
-
 export interface ProductCarouselOptions {
   title?: string;
   filters: {
@@ -114,7 +174,6 @@ export interface StaticContentOptions {
 }
 
 export type RenderableThemeOptions =
-  | ImageCarouselOptions
   | ProductCarouselOptions
   | CategoryCarouselOptions
   | StaticContentOptions;

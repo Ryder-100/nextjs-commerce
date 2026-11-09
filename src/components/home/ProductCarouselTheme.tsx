@@ -8,9 +8,11 @@ const Theme = ({ title, description, products }: ProductsSectionProps) => {
         <h2 className="mb-4 font-outfit text-xl md:text-4xl font-semibold text-black dark:text-white">
           {title}
         </h2>
-        <p className="text-sm md:text-base font-normal text-black/60 dark:text-neutral-300">
-          {description}
-        </p>
+          {description && (
+              <p className="text-sm md:text-base font-normal text-black/60 dark:text-neutral-300">
+                  {description}
+              </p>
+          )}
       </div>
 
       <div className="w-full pb-6 pt-1">

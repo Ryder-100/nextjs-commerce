@@ -2,7 +2,7 @@ import {Spu} from "@/types/api/product/type";
 
 export type ProductsSectionProps = {
   title: string;
-  description: string;
+    description?: string | null;
   products: Spu[];
 };
 

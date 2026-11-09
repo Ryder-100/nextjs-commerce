@@ -10,7 +10,7 @@ import {useTranslationData} from "@/hooks/useTranslationData";
 
 interface ThreeItemGridProps {
     title: string;
-    description: string;
+    description?: string | null;
   products: Array<Spu>;
 }
 
@@ -117,9 +117,11 @@ export const ThreeItemGrid: FC<ThreeItemGridProps> = ({ title, description, prod
                 <h1 className="mb-4 font-outfit text-xl md:text-4xl font-semibold text-black dark:text-white">
                     {title}
                 </h1>
-                <p className="text-sm md:text-base font-normal text-black/60 dark:text-neutral-300">
+                {description && (
+                    <p className="text-sm md:text-base font-normal text-black/60 dark:text-neutral-300">
                     {description}
-                </p>
+                    </p>
+                )}
             </div>
 
             <div className="hidden md:grid gap-4 md:grid-cols-6 md:grid-rows-2 lg:max-h-[calc(100vh-200px)]">

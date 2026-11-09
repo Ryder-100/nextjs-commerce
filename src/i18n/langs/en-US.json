@@ -547,10 +547,7 @@
     "title": "My Account"
   },
   "home": {
-    "categoryDescription": "Discover the latest trends! Fresh products just added. Shop new styles, tech, and essentials before they're gone.",
-    "productCarouselDescription": "Discover the latest trends! Fresh products just added. Shop new styles, tech, and essentials before they're gone.",
-    "relatedProducts": "Related Products",
-    "shopByCategory": "Shop by Category"
+    "relatedProducts": "Related Products"
   },
   "loginForm": {
     "description": "If you have an account, sign in with your email address.",
