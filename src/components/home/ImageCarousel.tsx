@@ -17,7 +17,11 @@ interface ImageCarouselProps {
     sectionSubtitle?: string | null;
 }
 
-const ImageCarousel: FC<ImageCarouselProps> = ({banners, sectionTitle, sectionSubtitle}) => {
+const ImageCarousel: FC<ImageCarouselProps> = ({
+                                                   banners,
+                                                   sectionTitle: _sectionTitle,
+                                                   sectionSubtitle: _sectionSubtitle
+                                               }) => {
     // ✅ 最小改动：把 BannerBriefVO 映射成组件内部期望的 options.images 结构
     // link 是 Admin 端 PromotionBanner 配的完整链接，需要智能处理：
     //   - http(s):// → 外部链接，新窗口打开
